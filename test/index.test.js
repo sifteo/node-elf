@@ -108,6 +108,7 @@ describe('elf', function() {
       elf.load('test/data/lua-5.2.1_SunOS510_bin/lua52', function(err, file) {
         expect(err).to.be.null;
         
+        /*
         console.log('type: ' + file.type);
         console.log('machine: ' + file.machine);
         console.log('version: ' + file.version);
@@ -121,6 +122,7 @@ describe('elf', function() {
         console.log('shentsize: ' + file.shentsize);
         console.log('shnum: ' + file.shnum);
         console.log('shstrndx: ' + file.shstrndx);
+        */
         
         expect(file.enc).to.equal(elf.Encoding.MSB);
         expect(file.type).to.equal(elf.Type.EXECUTABLE);
