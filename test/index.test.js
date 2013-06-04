@@ -103,6 +103,46 @@ describe('elf', function() {
     });
   });
   
+  describe('loading lua executable on Sun Solaris 10 x86', function() {
+    it('should parse correctly', function(done) {
+      elf.load('test/data/lua-5.2.1_SunOS510x86_bin/lua52', function(err, file) {
+        expect(err).to.be.null;
+        
+        expect(file.enc).to.equal(elf.Encoding.LSB);
+        expect(file.type).to.equal(elf.Type.EXECUTABLE);
+        expect(file.machine).to.equal(elf.Machine.I386);
+        expect(file.version).to.equal(elf.Version.CURRENT);
+        expect(file.entry).to.equal(134562592); // ???
+        expect(file.phoff).to.equal(52);
+        expect(file.shoff).to.equal(164592);
+        expect(file.flags).to.equal(0);
+        expect(file.ehsize).to.equal(52);
+        expect(file.phentsize).to.equal(32);
+        expect(file.phnum).to.equal(6);
+        expect(file.shentsize).to.equal(40);
+        expect(file.shnum).to.equal(28);
+        expect(file.shstrndx).to.equal(27);
+        
+        expect(file.pheaders).to.have.length(6);
+        
+        expect(file.sheaders).to.have.length(28);
+        expect(file.sheaders[27].namendx).to.equal(193);
+        expect(file.sheaders[27].name).to.equal('.shstrtab');
+        expect(file.sheaders[27].type).to.equal(3);
+        expect(file.sheaders[27].flags).to.equal(32);
+        expect(file.sheaders[27].addr).to.equal(0);
+        expect(file.sheaders[27].offset).to.equal(164388);
+        expect(file.sheaders[27].size).to.equal(203);
+        expect(file.sheaders[27].link).to.equal(0);
+        expect(file.sheaders[27].info).to.equal(0);
+        expect(file.sheaders[27].addralign).to.equal(1);
+        expect(file.sheaders[27].entsize).to.equal(0);
+        
+        done();
+      });
+    });
+  });
+  
   describe('loading a Sifteo SVM ELF file', function() {
     var elfFile;
     
