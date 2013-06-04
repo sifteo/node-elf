@@ -135,6 +135,15 @@ describe('elf', function() {
   it('should export machine constants', function() {
     expect(elf.Machine.NONE).to.equal(0);
     expect(elf.Machine.M32).to.equal(1);
+    expect(elf.Machine.SPARC).to.equal(2);
+    expect(elf.Machine.I386).to.equal(3);
+    expect(elf.Machine.M68K).to.equal(4);
+    expect(elf.Machine.M88K).to.equal(5);
+    expect(elf.Machine.I860).to.equal(7);
+    expect(elf.Machine.MIPS).to.equal(8);
+    expect(elf.Machine.MIPS_RS4_BE).to.equal(10);
+    expect(elf.Machine.ARM).to.equal(40);
+    expect(elf.Machine.X86_64).to.equal(62);
   });
   
   it('should export version constants', function() {
