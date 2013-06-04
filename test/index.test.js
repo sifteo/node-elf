@@ -153,7 +153,7 @@ describe('elf', function() {
       expect(file.sheaders[21].entsize).to.equal(0);
     });
     
-    it('should load segment', function(done) {
+    it('should read segment', function(done) {
       elfFile.readSegment(0x7000f001, function(err, buf) {
         expect(err).to.be.null;
         expect(buf).to.be.instanceOf(Buffer);
@@ -163,8 +163,26 @@ describe('elf', function() {
       });
     });
     
-    it('should error when loading segment that does not exist', function(done) {
+    it('should error when reading segment that does not exist', function(done) {
       elfFile.readSegment(0x7fffffff, function(err, buf) {
+        expect(err).to.be.instanceOf(Error);
+        expect(buf).to.be.undefined;
+        done();
+      });
+    });
+    
+    it('should read section', function(done) {
+      elfFile.readSection('.metadata', function(err, buf) {
+        expect(err).to.be.null;
+        expect(buf).to.be.instanceOf(Buffer);
+        expect(buf).to.be.have.length(108);
+        expect(buf[36]).to.be.equal(115);
+        done();
+      });
+    });
+    
+    it('should error when reading section that does not exist', function(done) {
+      elfFile.readSection('.invalid', function(err, buf) {
         expect(err).to.be.instanceOf(Error);
         expect(buf).to.be.undefined;
         done();
