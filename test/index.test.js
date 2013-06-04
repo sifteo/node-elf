@@ -107,7 +107,24 @@ describe('elf', function() {
         expect(file.shstrndx).to.equal(21);
         
         expect(file.sheaders).to.have.length(24);
-        expect(file.sheaders[21].iname).to.equal(173);
+        
+        expect(file.sheaders[0].namendx).to.equal(0);
+        expect(file.sheaders[0].name).to.be.undefined;
+        expect(file.sheaders[0].type).to.equal(0);
+        expect(file.sheaders[0].flags).to.equal(0);
+        expect(file.sheaders[0].addr).to.equal(0);
+        expect(file.sheaders[0].offset).to.equal(0);
+        expect(file.sheaders[0].size).to.equal(0);
+        expect(file.sheaders[0].link).to.equal(0);
+        expect(file.sheaders[0].info).to.equal(0);
+        expect(file.sheaders[0].addralign).to.equal(0);
+        expect(file.sheaders[0].entsize).to.equal(0);
+        
+        expect(file.sheaders[19].namendx).to.equal(207);
+        expect(file.sheaders[19].name).to.equal('.metadata');
+        
+        expect(file.sheaders[21].namendx).to.equal(173);
+        expect(file.sheaders[21].name).to.equal('.shstrtab');
         expect(file.sheaders[21].type).to.equal(3);
         expect(file.sheaders[21].flags).to.equal(0);
         expect(file.sheaders[21].addr).to.equal(0);
