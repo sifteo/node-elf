@@ -19,6 +19,20 @@ elf.load('/usr/local/bin/node', function(err, file) {
 });
 ```
 
+Read a segment:
+
+```javascript
+file.readSegment(0x01, function(err, buf) {
+});
+```
+
+Read a section:
+
+```javascript
+file.readSection('.text', function(err, buf) {
+});
+```
+
 ## Examples
 
 For an example that parses an ELF header, refer to the [parse.js](https://github.com/sifteo/node-elf/blob/master/examples/parse.js)
