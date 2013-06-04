@@ -47,6 +47,46 @@ describe('elf', function() {
     });
   });
   
+  describe('loading lua executable on 64-bit Linux', function() {
+    it('should parse correctly', function(done) {
+      elf.load('test/data/lua-5.2.1_Linux26_64_bin/lua52', function(err, file) {
+        expect(err).to.be.null;
+        
+        /*
+        console.log('type: ' + file.type);
+        console.log('machine: ' + file.machine);
+        console.log('version: ' + file.version);
+        console.log('entry: ' + file.entry);
+        console.log('phoff: ' + file.phoff);
+        console.log('shoff: ' + file.shoff);
+        console.log('flags: ' + file.flags);
+        console.log('ehsize: ' + file.ehsize);
+        console.log('phentsize: ' + file.phentsize);
+        console.log('phnum: ' + file.phnum);
+        console.log('shentsize: ' + file.shentsize);
+        console.log('shnum: ' + file.shnum);
+        console.log('shstrndx: ' + file.shstrndx);
+        */
+        
+        expect(file.enc).to.equal(elf.Encoding.LSB);
+        expect(file.type).to.equal(elf.Type.EXECUTABLE);
+        expect(file.machine).to.equal(elf.Machine.X86_64);
+        expect(file.version).to.equal(elf.Version.CURRENT);
+        expect(file.entry).to.equal(4210496); // ???
+        expect(file.phoff).to.equal(64);
+        expect(file.shoff).to.equal(181128);
+        expect(file.flags).to.equal(0);
+        expect(file.ehsize).to.equal(64);
+        expect(file.phentsize).to.equal(56);
+        expect(file.phnum).to.equal(8);
+        expect(file.shentsize).to.equal(64);
+        expect(file.shnum).to.equal(30);
+        expect(file.shstrndx).to.equal(27);
+        done();
+      });
+    });
+  });
+  
   describe('loading a Sifteo SVM ELF file', function() {
     it('should parse correctly', function(done) {
       elf.load('test/data/sifteo-cubes/membrane.elf', function(err, file) {
