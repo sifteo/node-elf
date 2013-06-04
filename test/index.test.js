@@ -88,60 +88,85 @@ describe('elf', function() {
   });
   
   describe('loading a Sifteo SVM ELF file', function() {
-    it('should parse correctly', function(done) {
+    var elfFile;
+    
+    before(function(done){
       elf.load('test/data/sifteo-cubes/membrane.elf', function(err, file) {
+        if (err) return done(err);
+        elfFile = file;
+        return done();
+      });
+    });
+    
+    it('should parse correctly', function() {
+      var file = elfFile;
+      
+      expect(file.enc).to.equal(elf.Encoding.LSB);
+      expect(file.type).to.equal(elf.Type.EXECUTABLE);
+      expect(file.machine).to.equal(elf.Machine.ARM);
+      expect(file.version).to.equal(elf.Version.CURRENT);
+      expect(file.entry).to.equal(2130706433); // ???
+      expect(file.phoff).to.equal(52);
+      expect(file.shoff).to.equal(491832);
+      expect(file.flags).to.equal(0);
+      expect(file.ehsize).to.equal(52);
+      expect(file.phentsize).to.equal(32);
+      expect(file.phnum).to.equal(4);
+      expect(file.shentsize).to.equal(40);
+      expect(file.shnum).to.equal(24);
+      expect(file.shstrndx).to.equal(21);
+      
+      expect(file.pheaders).to.have.length(4);
+      expect(file.pheaders[0].type).to.equal(0x7000f001);
+      expect(file.pheaders[0].offset).to.equal(180);
+      expect(file.pheaders[0].vaddr).to.equal(0);
+      expect(file.pheaders[0].paddr).to.equal(0);
+      expect(file.pheaders[0].filesz).to.equal(108);
+      expect(file.pheaders[0].memsz).to.equal(0);
+      expect(file.pheaders[0].flags).to.equal(4);
+      expect(file.pheaders[0].align).to.equal(4);
+      
+      expect(file.sheaders).to.have.length(24);
+      expect(file.sheaders[0].namendx).to.equal(0);
+      expect(file.sheaders[0].name).to.be.undefined;
+      expect(file.sheaders[0].type).to.equal(0);
+      expect(file.sheaders[0].flags).to.equal(0);
+      expect(file.sheaders[0].addr).to.equal(0);
+      expect(file.sheaders[0].offset).to.equal(0);
+      expect(file.sheaders[0].size).to.equal(0);
+      expect(file.sheaders[0].link).to.equal(0);
+      expect(file.sheaders[0].info).to.equal(0);
+      expect(file.sheaders[0].addralign).to.equal(0);
+      expect(file.sheaders[0].entsize).to.equal(0);
+      expect(file.sheaders[19].namendx).to.equal(207);
+      expect(file.sheaders[19].name).to.equal('.metadata');
+      expect(file.sheaders[21].namendx).to.equal(173);
+      expect(file.sheaders[21].name).to.equal('.shstrtab');
+      expect(file.sheaders[21].type).to.equal(3);
+      expect(file.sheaders[21].flags).to.equal(0);
+      expect(file.sheaders[21].addr).to.equal(0);
+      expect(file.sheaders[21].offset).to.equal(490203);
+      expect(file.sheaders[21].size).to.equal(265);
+      expect(file.sheaders[21].link).to.equal(0);
+      expect(file.sheaders[21].info).to.equal(0);
+      expect(file.sheaders[21].addralign).to.equal(1);
+      expect(file.sheaders[21].entsize).to.equal(0);
+    });
+    
+    it('should load segment', function(done) {
+      elfFile.readSegment(0x7000f001, function(err, buf) {
         expect(err).to.be.null;
-        expect(file.enc).to.equal(elf.Encoding.LSB);
-        expect(file.type).to.equal(elf.Type.EXECUTABLE);
-        expect(file.machine).to.equal(elf.Machine.ARM);
-        expect(file.version).to.equal(elf.Version.CURRENT);
-        expect(file.entry).to.equal(2130706433); // ???
-        expect(file.phoff).to.equal(52);
-        expect(file.shoff).to.equal(491832);
-        expect(file.flags).to.equal(0);
-        expect(file.ehsize).to.equal(52);
-        expect(file.phentsize).to.equal(32);
-        expect(file.phnum).to.equal(4);
-        expect(file.shentsize).to.equal(40);
-        expect(file.shnum).to.equal(24);
-        expect(file.shstrndx).to.equal(21);
-        
-        expect(file.pheaders).to.have.length(4);
-        expect(file.pheaders[0].type).to.equal(0x7000f001);
-        expect(file.pheaders[0].offset).to.equal(180);
-        expect(file.pheaders[0].vaddr).to.equal(0);
-        expect(file.pheaders[0].paddr).to.equal(0);
-        expect(file.pheaders[0].filesz).to.equal(108);
-        expect(file.pheaders[0].memsz).to.equal(0);
-        expect(file.pheaders[0].flags).to.equal(4);
-        expect(file.pheaders[0].align).to.equal(4);
-        
-        expect(file.sheaders).to.have.length(24);
-        expect(file.sheaders[0].namendx).to.equal(0);
-        expect(file.sheaders[0].name).to.be.undefined;
-        expect(file.sheaders[0].type).to.equal(0);
-        expect(file.sheaders[0].flags).to.equal(0);
-        expect(file.sheaders[0].addr).to.equal(0);
-        expect(file.sheaders[0].offset).to.equal(0);
-        expect(file.sheaders[0].size).to.equal(0);
-        expect(file.sheaders[0].link).to.equal(0);
-        expect(file.sheaders[0].info).to.equal(0);
-        expect(file.sheaders[0].addralign).to.equal(0);
-        expect(file.sheaders[0].entsize).to.equal(0);
-        expect(file.sheaders[19].namendx).to.equal(207);
-        expect(file.sheaders[19].name).to.equal('.metadata');
-        expect(file.sheaders[21].namendx).to.equal(173);
-        expect(file.sheaders[21].name).to.equal('.shstrtab');
-        expect(file.sheaders[21].type).to.equal(3);
-        expect(file.sheaders[21].flags).to.equal(0);
-        expect(file.sheaders[21].addr).to.equal(0);
-        expect(file.sheaders[21].offset).to.equal(490203);
-        expect(file.sheaders[21].size).to.equal(265);
-        expect(file.sheaders[21].link).to.equal(0);
-        expect(file.sheaders[21].info).to.equal(0);
-        expect(file.sheaders[21].addralign).to.equal(1);
-        expect(file.sheaders[21].entsize).to.equal(0);
-        
+        expect(buf).to.be.instanceOf(Buffer);
+        expect(buf).to.be.have.length(108);
+        expect(buf[36]).to.be.equal(115);
+        done();
+      });
+    });
+    
+    it('should error when loading segment that does not exist', function(done) {
+      elfFile.readSegment(0x7fffffff, function(err, buf) {
+        expect(err).to.be.instanceOf(Error);
+        expect(buf).to.be.undefined;
         done();
       });
     });
