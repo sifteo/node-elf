@@ -105,6 +105,19 @@ describe('elf', function() {
         expect(file.shentsize).to.equal(40);
         expect(file.shnum).to.equal(24);
         expect(file.shstrndx).to.equal(21);
+        
+        expect(file.sheaders).to.have.length(24);
+        expect(file.sheaders[21].iname).to.equal(173);
+        expect(file.sheaders[21].type).to.equal(3);
+        expect(file.sheaders[21].flags).to.equal(0);
+        expect(file.sheaders[21].addr).to.equal(0);
+        expect(file.sheaders[21].offset).to.equal(490203);
+        expect(file.sheaders[21].size).to.equal(265);
+        expect(file.sheaders[21].link).to.equal(0);
+        expect(file.sheaders[21].info).to.equal(0);
+        expect(file.sheaders[21].addralign).to.equal(1);
+        expect(file.sheaders[21].entsize).to.equal(0);
+        
         done();
       });
     });
