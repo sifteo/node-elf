@@ -1,5 +1,5 @@
 {
-  "name": "nelf",
+  "name": "sysvelf",
   "version": "0.1.0",
   "description": "An Executable and Linkable Format (ELF) parser.",
   "keywords": ["elf", "systemv", "unix", "abi"],

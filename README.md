@@ -5,7 +5,7 @@ files.
 
 ## Install
 
-    $ npm install nelf
+    $ npm install sysvelf
 
 ## Usage
 
