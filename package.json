@@ -1,0 +1,33 @@
+{
+  "name": "nelf",
+  "version": "0.1.0",
+  "description": "An Executable and Linkable Format (ELF) parser.",
+  "keywords": ["elf", "systemv", "unix", "abi"],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/sifteo/node-elf.git"
+  },
+  "bugs": {
+    "url": "http://github.com/sifteo/node-elf/issues"
+  },
+  "author": {
+    "name": "Jared Hanson",
+    "email": "jared@sifteo.com"
+  },
+  "licenses": [ {
+    "type": "MIT",
+    "url": "http://www.opensource.org/licenses/MIT" 
+  } ],
+  "main": "./lib",
+  "dependencies": {
+    "endian-buffer": "0.1.x"
+  },
+  "devDependencies": {
+    "mocha": "1.x.x",
+    "chai": "1.x.x"
+  },
+  "scripts": {
+    "test": "NODE_PATH=./lib node_modules/.bin/mocha --reporter spec --require test/bootstrap/node test/*.test.js"
+  },
+  "engines": { "node": ">= 0.4.0" }
+}
