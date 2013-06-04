@@ -103,6 +103,60 @@ describe('elf', function() {
     });
   });
   
+  describe('loading lua executable on Sun Solaris 10 SPARC', function() {
+    it('should parse correctly', function(done) {
+      elf.load('test/data/lua-5.2.1_SunOS510_bin/lua52', function(err, file) {
+        expect(err).to.be.null;
+        
+        console.log('type: ' + file.type);
+        console.log('machine: ' + file.machine);
+        console.log('version: ' + file.version);
+        console.log('entry: ' + file.entry);
+        console.log('phoff: ' + file.phoff);
+        console.log('shoff: ' + file.shoff);
+        console.log('flags: ' + file.flags);
+        console.log('ehsize: ' + file.ehsize);
+        console.log('phentsize: ' + file.phentsize);
+        console.log('phnum: ' + file.phnum);
+        console.log('shentsize: ' + file.shentsize);
+        console.log('shnum: ' + file.shnum);
+        console.log('shstrndx: ' + file.shstrndx);
+        
+        expect(file.enc).to.equal(elf.Encoding.MSB);
+        expect(file.type).to.equal(elf.Type.EXECUTABLE);
+        expect(file.machine).to.equal(elf.Machine.SPARC);
+        expect(file.version).to.equal(elf.Version.CURRENT);
+        expect(file.entry).to.equal(81864); // ???
+        expect(file.phoff).to.equal(52);
+        expect(file.shoff).to.equal(180668);
+        expect(file.flags).to.equal(0);
+        expect(file.ehsize).to.equal(52);
+        expect(file.phentsize).to.equal(32);
+        expect(file.phnum).to.equal(5);
+        expect(file.shentsize).to.equal(40);
+        expect(file.shnum).to.equal(34);
+        expect(file.shstrndx).to.equal(33);
+        
+        expect(file.pheaders).to.have.length(5);
+        
+        expect(file.sheaders).to.have.length(34);
+        expect(file.sheaders[33].namendx).to.equal(279);
+        expect(file.sheaders[33].name).to.equal('.shstrtab');
+        expect(file.sheaders[33].type).to.equal(3);
+        expect(file.sheaders[33].flags).to.equal(32);
+        expect(file.sheaders[33].addr).to.equal(0);
+        expect(file.sheaders[33].offset).to.equal(180379);
+        expect(file.sheaders[33].size).to.equal(289);
+        expect(file.sheaders[33].link).to.equal(0);
+        expect(file.sheaders[33].info).to.equal(0);
+        expect(file.sheaders[33].addralign).to.equal(1);
+        expect(file.sheaders[33].entsize).to.equal(0);
+        
+        done();
+      });
+    });
+  });
+  
   describe('loading lua executable on Sun Solaris 10 x86', function() {
     it('should parse correctly', function(done) {
       elf.load('test/data/lua-5.2.1_SunOS510x86_bin/lua52', function(err, file) {
