@@ -42,6 +42,22 @@ describe('elf', function() {
         expect(file.shentsize).to.equal(40);
         expect(file.shnum).to.equal(28);
         expect(file.shstrndx).to.equal(25);
+        
+        expect(file.pheaders).to.have.length(7);
+        
+        expect(file.sheaders).to.have.length(28);
+        expect(file.sheaders[25].namendx).to.equal(17);
+        expect(file.sheaders[25].name).to.equal('.shstrtab');
+        expect(file.sheaders[25].type).to.equal(3);
+        expect(file.sheaders[25].flags).to.equal(0);
+        expect(file.sheaders[25].addr).to.equal(0);
+        expect(file.sheaders[25].offset).to.equal(133851);
+        expect(file.sheaders[25].size).to.equal(215);
+        expect(file.sheaders[25].link).to.equal(0);
+        expect(file.sheaders[25].info).to.equal(0);
+        expect(file.sheaders[25].addralign).to.equal(1);
+        expect(file.sheaders[25].entsize).to.equal(0);
+        
         done();
       });
     });
